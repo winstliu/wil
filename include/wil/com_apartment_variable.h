@@ -161,7 +161,9 @@ namespace details
             {
             }
 
+#if defined(_RESUMABLE_FUNCTIONS_SUPPORTED) || defined(__cpp_impl_coroutine)
             winrt::apartment_context context;
+#endif // Coroutines are supported
             typename test_hook::shutdown_type cookie;
             // Variables are stored using the address of the apartment_variable_base<> as the key.
             std::unordered_map<apartment_variable_base<leak_action, test_hook>*, std::any> variables;
@@ -342,6 +344,7 @@ namespace details
             }
         }
 
+#if defined(_RESUMABLE_FUNCTIONS_SUPPORTED) || defined(__cpp_impl_coroutine)
         winrt::Windows::Foundation::IAsyncAction clear_all_apartments_async()
         {
             // gather all the apartments that hold objects we need to destruct
@@ -403,6 +406,7 @@ namespace details
                 }
             }
         }
+#endif // Coroutines are supported
 
         static const auto& storage()
         {
